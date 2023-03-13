@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CuttingCounter : BaseCounter
+public class CuttingCounter : BaseCounter, IHasProgress
 {
 
     [SerializeField] private CuttingRecipeSO[] cuttingRecipeSOArray;
@@ -48,7 +48,6 @@ public class CuttingCounter : BaseCounter
             _cuttingProgress++;
             OnCut?.Invoke();
             OnProgressChanged?.Invoke(CuttingProgressNormalized());
-            Debug.Log(_cuttingProgress);
             
             if (_currentCuttingRecipeSO.cuttingProgressMax <= _cuttingProgress)
             {
