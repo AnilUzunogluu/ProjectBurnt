@@ -28,14 +28,34 @@ public class CuttingCounter : BaseCounter, IHasProgress
         }
         else
         {
-            if (!player.HasKitchenObject())
+            if (player.HasKitchenObject())
+            {
+                if (player.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
+                {
+                    if (plateKitchenObject.TryAddIngredient(GetKitchenObject().KitchenObjectSO))
+                    {
+                        GetKitchenObject().DestroySelf();
+                    }
+                }
+                else
+                {
+                    if (GetKitchenObject().TryGetPlate( out plateKitchenObject))
+                    {
+                        if (plateKitchenObject.TryAddIngredient(player.GetKitchenObject().KitchenObjectSO))
+                        {
+                            player.GetKitchenObject().DestroySelf();
+                        }
+                    }
+                }
+            }
+            else
             {
                 if (HasRecipeWithInput(GetKitchenObject().KitchenObjectSO))
                 {
                     _cuttingProgress = 0;
                     OnProgressChanged?.Invoke(CuttingProgressNormalized());
                 }
-                GetKitchenObject().SetKitchenObjectParent(player);
+                GetKitchenObject().SetKitchenObjectParent(player); 
             }
         }
     }
